@@ -64,6 +64,6 @@ public class CustomArrayList<T> implements Iterable<T> {
 * */
     @Override
     public Iterator<T> iterator() {
-        return Arrays.asList((T[]) Arrays.copyOf(this.list, this.containerSize)).iterator();
+        return Arrays.stream(this.list, 0, containerSize).map(e -> (T) e).iterator();
     }
 }
