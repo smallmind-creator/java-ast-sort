@@ -43,7 +43,7 @@ public class CustomArrayList<T> implements Iterable<T> {
     }
 
     public boolean isEmpty() {
-        return this.containerSize < 0;
+        return this.containerSize == 0;
     }
 
     private void resize() {
