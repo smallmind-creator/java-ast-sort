@@ -11,7 +11,7 @@ public class Book implements Comparable<Book> {
         this.publicationYear = builder.publicationYear;
     }
 
-    private static class Builder {
+    public static class Builder {
         private String title;
         private String author;
         private int publicationYear;
