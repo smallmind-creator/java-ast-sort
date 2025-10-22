@@ -1,7 +1,7 @@
 package org.astonsorting;
 
 import org.astonsorting.model.Book;
-// import org.astonsorting.collection.CustomArrayList;
+import org.astonsorting.collection.CustomArrayList;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
@@ -9,13 +9,11 @@ import java.util.Scanner;
 public class App {
 
 
-    // private final CustomArrayList<Book> bookList;
-    private final List<Book> bookList; // Заменить на CustomArrayList<Book>
+    private final CustomArrayList<Book> bookList;
     private final Scanner scanner;
 
     public App() {
-        // this.bookList = new CustomArrayList<>();
-        this.bookList = new ArrayList<>(); // Заменить
+        this.bookList = new CustomArrayList<>();
         this.scanner = new Scanner(System.in);
     }
 
