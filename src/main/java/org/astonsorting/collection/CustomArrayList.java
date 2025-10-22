@@ -40,6 +40,7 @@ public class CustomArrayList<T> implements Iterable<T> {
         for(int i = 0; i < containerSize; i++) {
             this.list[i] = null;
         }
+        this.containerSize = 0;
     }
 
     public boolean isEmpty() {
