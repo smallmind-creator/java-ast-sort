@@ -58,6 +58,18 @@ public class CustomArrayList<T> implements Iterable<T> {
             this.list = extendedList;
         }
     }
+
+    private void ensureCapacity(int minCapacity) {
+        if (minCapacity > list.length) {
+            int newCapacity = (int) (list.length * 1.5) + 1;
+            if (newCapacity < minCapacity) {
+                newCapacity = minCapacity;
+            }
+            Object[] extendedList = new Object[newCapacity];
+            if (this.containerSize >= 0) System.arraycopy(this.list, 0, extendedList, 0, this.containerSize);
+            this.list = extendedList;
+        }
+    }
 /*
 * Преобразование массива в коллекцию
 * (игнорируя неиспользуемые ячейки)
