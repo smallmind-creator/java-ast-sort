@@ -1,7 +1,9 @@
 package org.astonsorting;
 
 import org.astonsorting.model.Book;
+import org.astonsorting.util.DataLoader;
 import org.astonsorting.collection.CustomArrayList;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
@@ -11,10 +13,12 @@ public class App {
 
     private final CustomArrayList<Book> bookList;
     private final Scanner scanner;
+    private final DataLoader dataLoader;
 
     public App() {
         this.bookList = new CustomArrayList<>();
         this.scanner = new Scanner(System.in);
+        this.dataLoader = new DataLoader();
     }
 
     public static void main(String[] args) {
@@ -66,7 +70,33 @@ public class App {
 
 
     private void handleLoadData() {
-        // В будущем здесь будет вызываться логика из класса DataLoader.
+        System.out.println("\n=== Загрузка Книг ===");
+        System.out.println("1. Загрузить из файла");
+        System.out.println("2. Сгенерировать случайные");
+        System.out.println("3. Ввести книгу вручную");
+        System.out.print("Ваш выбор: ");
+        String choice = scanner.nextLine();
+
+         switch (choice) {
+                case "1": 
+                    System.out.print("Введите путь: ");
+                    //Пока костыль, надо в CustomArrayList мб метод addAll добавить?
+                    for (Book book : dataLoader.loadBooksFromCsvFile(scanner.nextLine())) {
+                        bookList.add(book);
+                    }
+                    break;
+                case "2": 
+                    System.out.print("Введите количество книг: ");
+                    for (Book book : dataLoader.generateRandomBooks(Integer.parseInt(scanner.nextLine()))) {
+                        bookList.add(book);
+                    }
+                    break;
+                case "3": 
+                    bookList.add(dataLoader.loadBookFromConsole(scanner));
+                    break;
+                default: System.out.println("Пожалуйста, выберите пункт от 1 до 3."); break;
+            }
+
     }
 
     private void handleViewData() {
