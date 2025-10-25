@@ -39,6 +39,18 @@ public class Book implements Comparable<Book> {
         }
     }
 
+    public String getTitle() {
+        return this.title;
+    }
+
+    public String getAuthor() {
+        return this.author;
+    }
+
+    public int getPublicationYear() {
+        return this.publicationYear;
+    }
+
     @Override
     public int compareTo(Book book) {
         return this.title.compareTo(book.title);
