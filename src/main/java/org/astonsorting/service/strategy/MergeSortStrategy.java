@@ -6,10 +6,12 @@ import java.util.Comparator;
 
 /**
  * Реализация стратегии сортировки слиянием.
- * Для сортировки объектов, реализующих Comparable, использовать по значению title:
+ * Для сортировки объектов, реализующих Comparable:
  * Comparator.naturalOrder()
- * или
  * (b1, b2) -> b1.compareTo(b2)
+ * Comparator.comparing(Book::getTitle)
+ * Comparator.comparing(Book::getAuthor)
+ * Comparator.comparing(Book::getPublicationYear)
  */
 public class MergeSortStrategy<T> implements Sorter<T>{
     @Override
