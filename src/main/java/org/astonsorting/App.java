@@ -1,6 +1,7 @@
 package org.astonsorting;
 
 import org.astonsorting.model.Book;
+import org.astonsorting.util.DataLoader;
 import org.astonsorting.collection.CustomArrayList;
 import org.astonsorting.service.SortingService;
 import org.astonsorting.service.strategy.MergeSortStrategy;
@@ -13,11 +14,13 @@ import java.util.Scanner;
 public class App {
     private final CustomArrayList<Book> bookList;
     private final Scanner scanner;
+    private final DataLoader dataLoader;
     private final SortingService<Book> sortingService;
 
     public App() {
         this.bookList = new CustomArrayList<>();
         this.scanner = new Scanner(System.in);
+        this.dataLoader = new DataLoader();
         this.sortingService = new SortingService<>();
     }
 
@@ -71,7 +74,32 @@ public class App {
 
 
     private void handleLoadData() {
-        // В будущем здесь будет вызываться логика из класса DataLoader.
+        System.out.println("\n=== Загрузка Книг ===");
+        System.out.println("1. Загрузить из файла");
+        System.out.println("2. Сгенерировать случайные");
+        System.out.println("3. Ввести книгу вручную");
+        System.out.print("Ваш выбор: ");
+        String choice = scanner.nextLine();
+
+         switch (choice) {
+                case "1": 
+                    System.out.print("Введите путь: ");
+                    CustomArrayList<Book> loadedBooks = dataLoader.loadBooksFromCsvFile(scanner.nextLine());
+                    bookList.addAll(loadedBooks);
+                    System.out.println("Загружено " + loadedBooks.size() + " книг.");
+                    break;
+                case "2": 
+                    System.out.print("Введите количество книг: ");
+                    for (Book book : dataLoader.generateRandomBooks(Integer.parseInt(scanner.nextLine()))) {
+                        bookList.add(book);
+                    }
+                    break;
+                case "3": 
+                    bookList.add(dataLoader.loadBookFromConsole(scanner));
+                    break;
+                default: System.out.println("Пожалуйста, выберите пункт от 1 до 3."); break;
+            }
+
     }
 
     private void handleViewData() {
