@@ -20,7 +20,7 @@ public class CustomArrayList<T> implements Iterable<T> {
     public void add(T element) {
         if(element == null) throw new IllegalArgumentException("An element for the list is null");
 
-        resize();
+        ensureCapacity(containerSize + 1);
 
         this.list[containerSize] = element;
         this.containerSize++;
