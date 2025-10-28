@@ -80,10 +80,9 @@ public class App {
          switch (choice) {
                 case "1": 
                     System.out.print("Введите путь: ");
-                    //Пока костыль, надо в CustomArrayList мб метод addAll добавить?
-                    for (Book book : dataLoader.loadBooksFromCsvFile(scanner.nextLine())) {
-                        bookList.add(book);
-                    }
+                    CustomArrayList<Book> loadedBooks = dataLoader.loadBooksFromCsvFile(scanner.nextLine());
+                    bookList.addAll(loadedBooks);
+                    System.out.println("Загружено " + loadedBooks.size() + " книг.");
                     break;
                 case "2": 
                     System.out.print("Введите количество книг: ");
