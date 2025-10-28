@@ -3,22 +3,25 @@ package org.astonsorting;
 import org.astonsorting.model.Book;
 import org.astonsorting.util.DataLoader;
 import org.astonsorting.collection.CustomArrayList;
+import org.astonsorting.service.SortingService;
+import org.astonsorting.service.strategy.MergeSortStrategy;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Scanner;
 
 public class App {
-
-
     private final CustomArrayList<Book> bookList;
     private final Scanner scanner;
     private final DataLoader dataLoader;
+    private final SortingService<Book> sortingService;
 
     public App() {
         this.bookList = new CustomArrayList<>();
         this.scanner = new Scanner(System.in);
         this.dataLoader = new DataLoader();
+        this.sortingService = new SortingService<>();
     }
 
     public static void main(String[] args) {
@@ -48,6 +51,7 @@ public class App {
         }
         System.out.println("Завершение работы приложения.");
         scanner.close();
+        sortingService.shutdown();
     }
 
     private void pressEnterToContinue() {
@@ -109,7 +113,31 @@ public class App {
     }
 
     private void handleSortData() {
-        // В будущем здесь будет вызываться метод SortingService.sort(bookList).
+        System.out.println("\n=== Отсортировать текущий список ===");
+        System.out.println("Статус данных: [" + bookList.size() + " книг]");
+        System.out.println("1. По названию");
+        System.out.println("2. По автору");
+        System.out.println("3. По году");
+        System.out.print("Ваш выбор: ");
+
+        String choice = scanner.nextLine();
+
+        switch (choice) {
+            case "1":
+                sortingService.sort(bookList, new MergeSortStrategy<>(), Comparator.comparing(Book::getTitle));
+                break;
+            case "2":
+                sortingService.sort(bookList, new MergeSortStrategy<>(), Comparator.comparing(Book::getAuthor));;
+                break;
+            case "3":
+                sortingService.sort(bookList, new MergeSortStrategy<>(), Comparator.comparing(Book::getPublicationYear));
+                break;
+            default:
+                System.out.println("Пожалуйста, выберите пункт от 1 до 3.");
+
+                handleSortData();
+                break;
+        }
     }
 
     private void handleFindElement() {
