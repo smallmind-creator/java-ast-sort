@@ -7,6 +7,7 @@ import org.astonsorting.util.DataWriter;
 import org.astonsorting.collection.CustomArrayList;
 import org.astonsorting.service.SortingService;
 import org.astonsorting.service.strategy.MergeSortStrategy;
+import org.astonsorting.service.CollectionCounterService;
 
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -18,14 +19,22 @@ public class App {
     private final Scanner scanner;
     private final DataLoader dataLoader;
     private final SortingService<Book> sortingService;
+<<<<<<< HEAD
     private final DataWriter dataWriter;
+=======
+    private final CollectionCounterService counterService;
+>>>>>>> 321ef628f5210afc18c97efcc7c3492e34f6bcf5
 
     public App() {
         this.bookList = new CustomArrayList<>();
         this.scanner = new Scanner(System.in);
         this.dataLoader = new DataLoader();
         this.sortingService = new SortingService<>();
+<<<<<<< HEAD
         this.dataWriter = new DataWriter();
+=======
+        this.counterService = new CollectionCounterService();
+>>>>>>> 321ef628f5210afc18c97efcc7c3492e34f6bcf5
     }
 
     public static void main(String[] args) {
@@ -162,7 +171,43 @@ public class App {
     }
 
     private void handleCountOccurrences() {
-        // Здесь будет вызываться многопоточный сервис подсчета элементов.
+        if (bookList.isEmpty()) {
+            System.out.println("Список книг пуст. Сначала загрузите данные.");
+            return;
+        }
+
+        System.out.println("\n=== Подсчет вхождений книги ===");
+        System.out.println("Введите данные для искомой книги:");
+
+        System.out.print("Введите название: ");
+        String title = scanner.nextLine();
+
+        System.out.print("Введите автора: ");
+        String author = scanner.nextLine();
+
+        System.out.print("Введите год публикации: ");
+        int year;
+        try {
+            year = Integer.parseInt(scanner.nextLine());
+        } catch (NumberFormatException e) {
+            System.out.println("Ошибка: год должен быть числом. Операция отменена.");
+            return;
+        }
+
+        Book bookToFind = new Book.Builder()
+                .setTitle(title)
+                .setAuthor(author)
+                .setPublicationYear(year)
+                .build();
+
+        System.out.println("Запускаем подсчет для: " + bookToFind + "...");
+        int occurrences = counterService.countOccurrences(bookList, bookToFind);
+
+        if (occurrences >= 0) {
+            System.out.println("Результат: данная книга встречается в коллекции " + occurrences + " раз(а).");
+        } else {
+            System.out.println("Произошла ошибка в процессе подсчета.");
+        }
     }
 
     private void handleWriteToFile() {
