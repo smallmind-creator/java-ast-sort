@@ -40,7 +40,7 @@ public class MergeSortStrategy<T> implements Sorter<T>{
 * Объединение частей коллекции list.
 * Применение comparator для сравнения пары классов Book из leftSideList и rightSideList соответственно.
 */
-    private CustomArrayList<T> mergeSortList(CustomArrayList<T> leftSideList, CustomArrayList<T> rightSideList,
+    public CustomArrayList<T> mergeSortList(CustomArrayList<T> leftSideList, CustomArrayList<T> rightSideList,
                                              Comparator<T> comparator) {
         CustomArrayList<T> resList = new CustomArrayList<>();
 
