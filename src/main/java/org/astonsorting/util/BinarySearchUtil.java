@@ -15,7 +15,7 @@ public class BinarySearchUtil {
 
         while(low <= high)
         {
-            int mid = low + (high - low);
+            int mid = low + (high - low) / 2;
             T midValue = (T)sortedList.get(mid);
             int cmp = comparator.compare(midValue, key);
 ;
