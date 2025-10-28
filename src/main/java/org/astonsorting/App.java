@@ -1,6 +1,7 @@
 package org.astonsorting;
 
 import org.astonsorting.model.Book;
+import org.astonsorting.util.BinarySearchUtil;
 import org.astonsorting.util.DataLoader;
 import org.astonsorting.collection.CustomArrayList;
 import org.astonsorting.service.SortingService;
@@ -142,7 +143,20 @@ public class App {
     }
 
     private void handleFindElement() {
-        // В будущем здесь будет вызываться метод из утилиты бинарного поиска.
+        System.out.println("\n=== Найти книгу ===");
+        System.out.print("Введите название книги: ");
+        Book book = new Book.Builder()
+                            .setTitle(scanner.nextLine())
+                            .build();
+        Comparator bookComparator = Comparator.comparing(Book::getTitle);
+        sortingService.sort(bookList, new MergeSortStrategy<>(), bookComparator);
+        int  index = BinarySearchUtil.find(bookList, book, bookComparator);
+        if (index == -1)
+            System.out.print("Книги нет в списке");
+        else{
+            book = bookList.get(index);
+            System.out.println(book);
+        }
     }
 
     private void handleCountOccurrences() {
