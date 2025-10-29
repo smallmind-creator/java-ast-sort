@@ -1,8 +1,8 @@
 package org.astonsorting.collection;
 
 import java.lang.Iterable;
-import java.util.Iterator;
 import java.util.*;
+import java.util.stream.Collectors;
 
 /*Реализация пользовательского варианта коллекции
 * через использование обычного массива
@@ -94,5 +94,28 @@ public class CustomArrayList<T> implements Iterable<T> {
     @Override
     public Iterator<T> iterator() {
         return Arrays.stream(this.list, 0, containerSize).map(e -> (T) e).iterator();
+    }
+//Добавил метод для сравнения листов
+    @Override
+    public boolean equals(Object obj){
+         if (this == obj) 
+            return true;
+        if (obj == null || getClass() != obj.getClass()) 
+            return false;
+
+        CustomArrayList<T> other = (CustomArrayList<T>) obj;
+
+        return skipNulls(this.list).equals(skipNulls(other.list));
+    }
+
+    @Override
+    public String toString(){
+        return Arrays.asList(this.list).toString();
+    }
+    // функция чтобы отсечь нулевые элементы
+    private List<Object> skipNulls(Object[] list){
+        return Arrays.asList(list).stream()
+                    .filter(Objects::nonNull)
+                    .collect(Collectors.toList());
     }
 }

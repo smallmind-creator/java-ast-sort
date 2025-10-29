@@ -19,22 +19,16 @@ public class App {
     private final Scanner scanner;
     private final DataLoader dataLoader;
     private final SortingService<Book> sortingService;
-<<<<<<< HEAD
     private final DataWriter dataWriter;
-=======
     private final CollectionCounterService counterService;
->>>>>>> 321ef628f5210afc18c97efcc7c3492e34f6bcf5
 
     public App() {
         this.bookList = new CustomArrayList<>();
         this.scanner = new Scanner(System.in);
         this.dataLoader = new DataLoader();
         this.sortingService = new SortingService<>();
-<<<<<<< HEAD
         this.dataWriter = new DataWriter();
-=======
         this.counterService = new CollectionCounterService();
->>>>>>> 321ef628f5210afc18c97efcc7c3492e34f6bcf5
     }
 
     public static void main(String[] args) {
