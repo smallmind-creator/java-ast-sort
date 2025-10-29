@@ -8,7 +8,7 @@ import org.astonsorting.service.SortingService;
 import org.astonsorting.service.strategy.MergeSortStrategy;
 import org.astonsorting.service.CollectionCounterService;
 import org.astonsorting.service.strategy.EvenOddSortStrategy;
-
+import org.astonsorting.service.strategy.Sorter;
 
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -119,89 +119,61 @@ public class App {
     }
 
     private void handleSortData() {
-        System.out.println("\nОтсортировать текущий список");
+        System.out.println("\n=== Отсортировать текущий список ===");
         System.out.println("Статус данных: [" + bookList.size() + " книг]");
 
-        if (bookList.isEmpty()) {
-            System.out.println("Список пуст. Пожалуйста, сначала загрузите данные");
-            return;
+        // добавлен выбор сортировки (обычная и чёт/нечёт)
+        System.out.println("Выберите тип сортировки:");
+        System.out.println("1. Обычная (MergeSort)");
+        System.out.println("2. Кастомная: чётные годы сортируются, нечётные остаются на месте");
+        System.out.print("Ваш выбор: ");
+        String sortType = scanner.nextLine();
+
+        if ("2".equals(sortType)) {
+            // кастомная сортировка, где чётные сортируем, а нечётные остаются на месте
+            System.out.println("1. По названию");
+            System.out.println("2. По автору");
+            System.out.println("3. По году");
+            System.out.print("Ваш выбор: ");
+            String fieldForCustom = scanner.nextLine();
+
+            Comparator<Book> customComparator;
+            switch (fieldForCustom) {
+                case "1" -> customComparator = Comparator.comparing(Book::getTitle);
+                case "2" -> customComparator = Comparator.comparing(Book::getAuthor);
+                case "3" -> customComparator = Comparator.comparingInt(Book::getPublicationYear);
+                default -> {
+                    System.out.println("Пожалуйста, выберите пункт от 1 до 3.");
+                    return;
+                }
+            }
+            // тут сортируются только чётные годы переданным компаратором
+            sortingService.sort(bookList, new EvenOddSortStrategy<Book>(Book::getPublicationYear), customComparator);
+            return; // выходим
         }
 
-        // Выбор стратегии
-        System.out.println("Выберите тип сортировки:");
-        System.out.println("1. Обычная: MergeSort");
-        System.out.println("2. Кастомная: чётные годы сортируются, нечётные остаются на местах");
-        System.out.print("Ваш выбор: ");
-        String strategyChoice = scanner.nextLine().trim();
-
-        // Тут выбор поля сортировки (компаратора)
-        System.out.println("Как отсортировать?");
+        // Merge сортировка
         System.out.println("1. По названию");
         System.out.println("2. По автору");
         System.out.println("3. По году");
         System.out.print("Ваш выбор: ");
 
-        String fieldChoice = scanner.nextLine().trim();
+        String choice = scanner.nextLine();
 
-        Comparator<Book> comparator;
-        switch (fieldChoice) {
-            case "1" -> // По названию, если содержит числа - сортируем по числу (из-за реализованной генерации книг и авторов с просто добавленной нумерацией). Если чисел нет, то книга уходит в конец списка - сортируем мх между собой по алфавиту
-                    comparator = Comparator
-                            .comparingInt((Book b) -> {
-                                String title = b.getTitle() == null ? "" : b.getTitle();
-                                String digits = title.replaceAll("\\D+", ""); // вытаскиваем число из названия
-                                return digits.isEmpty() ? Integer.MAX_VALUE : Integer.parseInt(digits);
-                            })
-                            .thenComparing(Book::getTitle, String.CASE_INSENSITIVE_ORDER) // если числа равны или цифр нет — алфавит по названию
-                            .thenComparingInt(Book::getPublicationYear);                  // окончательный тай-брейкер
-
-            case "2" -> // По автору, в алфавит порядке с тай-брейкерами
-                    comparator = Comparator
-                            .comparing(Book::getAuthor, String.CASE_INSENSITIVE_ORDER)
-                            .thenComparing(Book::getTitle, String.CASE_INSENSITIVE_ORDER)
-                            .thenComparingInt(Book::getPublicationYear);
-
-            case "3" -> // По году, по возрастанию года + тай-брейкеры
-                    comparator = Comparator
-                            .comparingInt(Book::getPublicationYear)
-                            .thenComparing(Book::getTitle, String.CASE_INSENSITIVE_ORDER)
-                            .thenComparing(Book::getAuthor, String.CASE_INSENSITIVE_ORDER);
-
-            default -> {
-                System.out.println("Пожалуйста, выберите пункт от 1 до 3");
+        switch (choice) {
+            case "1":
+                sortingService.sort(bookList, new MergeSortStrategy<>(), Comparator.comparing(Book::getTitle));
+                break;
+            case "2":
+                sortingService.sort(bookList, new MergeSortStrategy<>(), Comparator.comparing(Book::getAuthor));
+                break;
+            case "3":
+                sortingService.sort(bookList, new MergeSortStrategy<>(), Comparator.comparing(Book::getPublicationYear));
+                break;
+            default:
+                System.out.println("Пожалуйста, выберите пункт от 1 до 3.");
                 handleSortData();
-                return;
-            }
-        }
-
-        // Запуск нужной стратегии
-        switch (strategyChoice) {
-            case "2" -> {
-                // Cортируем только чётные publicationYear
-                sortingService.sort(
-                        bookList,
-                        new EvenOddSortStrategy<Book>(Book::getPublicationYear),
-                        comparator
-                );
-            }
-            case "1" -> {
-                // Обычная стратегия
-                sortingService.sort(
-                        bookList,
-                        new MergeSortStrategy<>(),
-                        comparator
-                );
-            }
-            default -> {
-                System.out.println("Пожалуйста, выберите пункт 1 или 2");
-                handleSortData();
-                return;
-            }
-        }
-
-        System.out.println("Готово. Текущий список:");
-        for (Book b : bookList) {
-            System.out.println(b);
+                break;
         }
     }
 
