@@ -40,7 +40,7 @@ public class EvenOddSortStrategy<T> implements Sorter<T> {
 
         // отмечаем позиции чётных и собираем чётные элементы
         boolean[] evenPos = new boolean[n];
-        List<T> evens = new ArrayList<>();
+        CustomArrayList<T> evens = new CustomArrayList<>();
         for (int i = 0; i < n; i++) {
             T item = list.get(i);
             boolean isEven = (yearExtractor.getPublicationYear(item) & 1) == 0; // чётный год?
@@ -56,7 +56,7 @@ public class EvenOddSortStrategy<T> implements Sorter<T> {
         }
 
         // сортируем только чётные по компаратору
-        evens.sort(comparator);
+        evens = new MergeSortStrategy<T>().sort(evens, comparator);
 
         // сбор нового списка
         // на местах evenPos[i] = true разместили отсортированные чётные по порядку
