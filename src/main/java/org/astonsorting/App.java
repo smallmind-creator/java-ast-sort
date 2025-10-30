@@ -3,6 +3,7 @@ package org.astonsorting;
 import org.astonsorting.model.Book;
 import org.astonsorting.util.BinarySearchUtil;
 import org.astonsorting.util.DataLoader;
+import org.astonsorting.util.DataWriter;
 import org.astonsorting.collection.CustomArrayList;
 import org.astonsorting.service.SortingService;
 import org.astonsorting.service.strategy.MergeSortStrategy;
@@ -18,6 +19,7 @@ public class App {
     private final Scanner scanner;
     private final DataLoader dataLoader;
     private final SortingService<Book> sortingService;
+    private final DataWriter dataWriter;
     private final CollectionCounterService counterService;
 
     public App() {
@@ -25,6 +27,7 @@ public class App {
         this.scanner = new Scanner(System.in);
         this.dataLoader = new DataLoader();
         this.sortingService = new SortingService<>();
+        this.dataWriter = new DataWriter();
         this.counterService = new CollectionCounterService();
     }
 
@@ -78,7 +81,7 @@ public class App {
 
 
     private void handleLoadData() {
-        System.out.println("\n=== Загрузка Книг ===");
+        System.out.println("\n=== Загрузить Книги ===");
         System.out.println("1. Загрузить из файла");
         System.out.println("2. Сгенерировать случайные");
         System.out.println("3. Ввести книгу вручную");
@@ -202,6 +205,8 @@ public class App {
     }
 
     private void handleWriteToFile() {
-        // Здесь будет вызываться сервис для записи данных в файл.
+        System.out.println("\n=== Записать книги в файлы ===");
+        System.out.print("Введите путь к файлу: ");
+        dataWriter.writeListToFile(scanner.nextLine(), bookList);
     }
 }
