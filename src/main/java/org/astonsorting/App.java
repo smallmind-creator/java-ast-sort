@@ -7,6 +7,7 @@ import org.astonsorting.util.DataWriter;
 import org.astonsorting.collection.CustomArrayList;
 import org.astonsorting.service.SortingService;
 import org.astonsorting.service.strategy.MergeSortStrategy;
+import org.astonsorting.service.strategy.ParallelMergeSortStrategy;
 import org.astonsorting.service.CollectionCounterService;
 import org.astonsorting.service.strategy.EvenOddSortStrategy;
 import org.astonsorting.service.strategy.Sorter;
@@ -165,13 +166,13 @@ public class App {
 
         switch (choice) {
             case "1":
-                sortingService.sort(bookList, new MergeSortStrategy<>(), Comparator.comparing(Book::getTitle));
+                sortingService.sort(bookList, new ParallelMergeSortStrategy<>(), Comparator.comparing(Book::getTitle));
                 break;
             case "2":
-                sortingService.sort(bookList, new MergeSortStrategy<>(), Comparator.comparing(Book::getAuthor));
+                sortingService.sort(bookList, new ParallelMergeSortStrategy<>(), Comparator.comparing(Book::getAuthor));
                 break;
             case "3":
-                sortingService.sort(bookList, new MergeSortStrategy<>(), Comparator.comparing(Book::getPublicationYear));
+                sortingService.sort(bookList, new ParallelMergeSortStrategy<>(), Comparator.comparing(Book::getPublicationYear));
                 break;
             default:
                 System.out.println("Пожалуйста, выберите пункт от 1 до 3.");

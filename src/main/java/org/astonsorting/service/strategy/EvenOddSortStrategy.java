@@ -56,7 +56,7 @@ public class EvenOddSortStrategy<T> implements Sorter<T> {
         }
 
         // сортируем только чётные по компаратору
-        evens = new MergeSortStrategy<T>().sort(evens, comparator);
+        evens = new ParallelMergeSortStrategy<T>().sort(evens, comparator);
 
         // сбор нового списка
         // на местах evenPos[i] = true разместили отсортированные чётные по порядку
